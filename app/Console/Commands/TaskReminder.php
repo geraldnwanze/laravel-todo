@@ -31,9 +31,7 @@ class TaskReminder extends Command
         $users = User::all();
         for ($a = 0; $a < $users->count(); $a++) {
             $tasks = $users[$a]->todayTasks;
-            for ($i = 0; $i < $tasks->count(); $i++) {
-                TaskJob::dispatch($users[$a], $tasks);
-            }
+            TaskJob::dispatch($users[$a], $tasks);
         }
     }
 }

@@ -1,15 +1,14 @@
 <x-mail::message>
-
 # Dear {{ $name }},
 
-Below are your tasks for the day
+Below are yout tasks for today
 
-
-@forelse ($tasks as $task)
-    <x-tasks.card :task="$task" />
-@empty
-    
-@endforelse
+@foreach($tasks as $task)
+<x-mail::panel>
+    <h1>{{ $task->title }}</h1>
+    {{ $task->description }};
+</x-mail::panel>
+@endforeach
 
 Thanks,<br>
 {{ config('app.name') }}

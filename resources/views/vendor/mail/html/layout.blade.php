@@ -6,8 +6,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="color-scheme" content="light">
 <meta name="supported-color-schemes" content="light">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.4/flowbite.min.css" rel="stylesheet" />
-<script src="https://cdn.tailwindcss.com"></script>
 <style>
 @media only screen and (max-width: 600px) {
 .inner-body {
@@ -56,6 +54,5 @@ width: 100% !important;
 </tr>
 </table>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.4/flowbite.min.js"></script>
 </body>
 </html>
