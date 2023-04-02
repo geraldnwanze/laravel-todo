@@ -16,6 +16,7 @@ The features include:
 - viewing tasks
 - updating tasks that are yet to be completed
 - deleting unwanted tasks
+- sending out emails daily with tasks for the day
 
 ## Laravel Features That Were Used
 
