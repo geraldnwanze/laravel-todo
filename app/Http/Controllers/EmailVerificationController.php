@@ -50,7 +50,7 @@ class EmailVerificationController extends Controller
             return back()->with('success', 'A verification link has been sent to your email');
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
-            return back()->with('error', $th->getMessage());
+            return back()->with('error', 'something went wrong');
         }
     }
 
