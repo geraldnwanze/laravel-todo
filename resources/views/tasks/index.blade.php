@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('layouts.main')
 
 @section('content')
 <section class="w-full mt-20">
@@ -17,7 +17,7 @@
         @empty
             <h1>No Task Available</h1>
         @endforelse
-        <div class="w-1/3 mx-auto py-5">
+        <div class="w-10/12 lg:w-1/3 mx-auto py-5">
             {{ $tasks->links() }}
         </div>
     </div>

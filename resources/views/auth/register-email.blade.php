@@ -1,9 +1,9 @@
-@extends('layout')
+@extends('layouts.auth')
 
 @section('content')
  
 <section class="w-full pt-32">
-  <div class="container w-1/3 mx-auto bg-gray-900 rounded-lg py-20">
+  <div class="container w-10/12 lg:w-1/3 mx-auto bg-gray-900 rounded-lg py-20">
     <h2 class="text-2xl font-bold text-center mb-8 text-white">Register</h2>
     <form method="POST" action="{{ route('auth.send-verification-email') }}">
       @csrf 
@@ -15,6 +15,9 @@
         <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
       </div>
     </form>
+    <div class="w-full lg:w-1/2 mt-5 ml-5 lg:text-center">
+      <a href="{{ route('auth.login-page') }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Login?</a>
+    </div>
   </div>
 </section>
    

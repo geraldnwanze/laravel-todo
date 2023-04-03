@@ -1,10 +1,10 @@
-@extends('layout')
+@extends('layouts.main')
 
 @section('content')
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 <section class="w-full pt-28">
-  <div class="container w-1/2 mx-auto bg-gray-900 rounded-lg py-5">
+  <div class="container w-10/12 lg:w-1/2 mx-auto bg-gray-900 rounded-lg py-5">
     <h2 class="text-2xl font-bold text-center mb-8 text-white">Search For Tasks</h2>
     <form method="POST" action="{{ route('tasks.search') }}" id="search-form">
       @csrf 
@@ -26,7 +26,7 @@
 </section>
 
 @if (session()->has('tasks'))
-<h1 class='text-center font-bold text-2xl mt-16'>Tasks Between {{ old('from') }} and {{ old('to') }}</h1>
+<h1 class='text-center font-bold text-md lg:text-2xl mt-16'>Tasks Between {{ old('from') }} and {{ old('to') }}</h1>
   @forelse (session()->get('tasks') as $task)
       <x-tasks.card :task="$task" />
   @empty
