@@ -21,7 +21,7 @@ class EmailVerificationController extends Controller
 
     public function expire($minutes = 15)
     {
-        return now('WAT')->addMinutes($minutes);
+        return now()->addMinutes($minutes);
     }
 
     public function store(StoreEmailVerificationRequest $request)
@@ -50,7 +50,7 @@ class EmailVerificationController extends Controller
             return back()->with('success', 'A verification link has been sent to your email');
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
-            return back()->with('error', 'something went wrong');
+            return back()->with('error', 'An error occurred');
         }
     }
 
@@ -83,7 +83,7 @@ class EmailVerificationController extends Controller
         }
 
         $data = $emailVerification->first();
-        if ($data->expire < now('WAT')) {
+        if ($data->expire < now()) {
             $this->update($data->email);
             return redirect()->route('auth.register-email-page')->with('error', 'verification link has expired, a fresh one has been resent to your email');
         }
