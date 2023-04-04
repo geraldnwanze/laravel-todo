@@ -41,4 +41,4 @@ Route::group(['middleware' => 'auth', 'prefix' => 'tasks', 'as' => 'tasks.'], fu
     Route::post('search', [TaskController::class, 'search'])->name('search');
 });
 
-Route::fallback(fn () => to_route('auth.login-page'));
+Route::fallback(fn () => auth()->check() ? to_route('tasks.index') : to_route('auth.login-page'));

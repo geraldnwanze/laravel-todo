@@ -3,6 +3,8 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Session\TokenMismatchException;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -40,11 +42,17 @@ class Handler extends ExceptionHandler
     public function register(): void
     {
         $this->reportable(function (Throwable $e) {
-            //
+
         });
 
         $this->renderable(function (Throwable $e) {
-            (new CustomException)->render($e);
+                return $this->renderExceptions($e);
         });
     }
+
+    public function renderExceptions(Throwable $e)
+    {
+        return (new CustomException($e))->render();
+    }
+
 }

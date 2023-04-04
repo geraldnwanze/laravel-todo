@@ -26,4 +26,9 @@ class LoginRequest extends FormRequest
             'password' => 'required|max:255'
         ];
     }
+
+    public function withInput()
+    {
+        return true;
+    }
 }

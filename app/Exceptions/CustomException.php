@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Http\Response;
 use Illuminate\Session\TokenMismatchException;
 use Illuminate\Support\Facades\Log;
 use Throwable;
@@ -13,17 +14,26 @@ use Throwable;
 
 class CustomException extends Exception
 {
-    protected $code;
+    protected $instance, $class, $statusCode, $message;
 
-    public function render(Throwable $e)
+    public function __construct(Throwable $e)
     {
-        if ($e instanceof TokenMismatchException) {
-            return redirect('https://google.com');
-        }
+        $this->instance = $e->getPrevious();
+        $this->class = get_class($this->instance);
+        $this->statusCode = $e->getStatusCode();
+        $this->message = $e->getMessage();
     }
 
-    public function TokenMismatchException()
+    public function logToFile()
     {
-        abort(419, 'ya mad');
+        Log::error('exception', ['class' => $this->class, 'statusCode' => $this->statusCode, 'message' => $this->message]);
     }
+
+    public function render()
+    {
+        $this->logToFile();
+
+        return back()->with('error', 'something went wrong');
+    }
+
 }
