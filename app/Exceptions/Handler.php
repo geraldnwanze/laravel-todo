@@ -31,9 +31,7 @@ class Handler extends ExceptionHandler
      * @var array<int, string>
      */
     protected $dontFlash = [
-        'current_password',
         'password',
-        'password_confirmation',
     ];
 
     /**
@@ -43,6 +41,10 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (Throwable $e) {
             //
+        });
+
+        $this->renderable(function (Throwable $e) {
+            (new CustomException)->render($e);
         });
     }
 }
