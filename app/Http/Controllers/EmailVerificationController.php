@@ -26,14 +26,16 @@ class EmailVerificationController extends Controller
 
     public function store(StoreEmailVerificationRequest $request)
     {
+        $this->verifyCaptcha($request->validated('g-recaptcha-response'));
+        
         try {
             $token = $this->token();
             $expire = $this->expire();
             $email = $request->validated('email');
 
             $values = [
-                'email' => $email, 
-                'token' => $token, 
+                'email' => $email,
+                'token' => $token,
                 'expire' => $expire
             ];
 

@@ -13,7 +13,7 @@ class AuthController extends Controller
     {
         if (!User::where('email', $email)->exists()) {
             User::create(['email' => $email]);
-        } 
+        }
     }
 
     public function registerPage($email)
@@ -48,6 +48,8 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request)
     {
+        $this->verifyCaptcha($request->input('g-recaptcha-response'));
+
         if (!Auth::attempt($request->validated())) {
             return back()->with('error', 'invalid credentials');
         }

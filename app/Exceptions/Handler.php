@@ -2,9 +2,8 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Illuminate\Session\TokenMismatchException;
-use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -46,13 +45,10 @@ class Handler extends ExceptionHandler
         });
 
         $this->renderable(function (Throwable $e) {
-                return $this->renderExceptions($e);
+            if ($e instanceof QueryException) {
+                return back()->with('error', 'something went wrong')->withInput();
+            }
         });
-    }
-
-    public function renderExceptions(Throwable $e)
-    {
-        return (new CustomException($e))->render();
     }
 
 }

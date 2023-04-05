@@ -23,7 +23,21 @@ class LoginRequest extends FormRequest
     {
         return [
             'email' => 'required|email|max:255',
-            'password' => 'required|max:255'
+            'password' => 'required|max:255',
+            'g-recaptcha-response' => 'required'
+        ];
+    }
+
+    public function validated($key = null, $default = null)
+    {
+        $data = $this->only(['email', 'password']);
+        return $data;
+    }
+
+    public function messages()
+    {
+        return [
+            'g-recaptcha-response.required' => 'Please verify that you are human'
         ];
     }
 
