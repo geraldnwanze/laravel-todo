@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Password;
 
 class UpdateRegisterRequest extends FormRequest
 {
@@ -21,10 +22,12 @@ class UpdateRegisterRequest extends FormRequest
      */
     public function rules(): array
     {
+        $passwordRules = Password::min(6)->letters()->numbers()->mixedCase()->symbols()->uncompromised();
+
         return [
             'email' => 'required|email|email:dns|max:255',
             'name' => 'required|max:255',
-            'password' => 'required|confirmed'
+            'password' => ['required', 'confirmed', $passwordRules]
         ];
     }
 
