@@ -56,8 +56,6 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $e)
     {
-        // dd($e);
-
         $this->exceptionLogger($request, $e);
 
         if ($e instanceof QueryException) {
@@ -69,15 +67,14 @@ class Handler extends ExceptionHandler
         }
 
         if ($e instanceof ValidationException) {
-            return back()->withErrors($e->validator->messages()->messages())->withInput();
+            return back()->withErrors($e->validator->getMessageBag()->all())->withInput();
         }
-
     }
 
     public function exceptionLogger($request, Throwable $e)
     {
         $exceptionClass = class_basename($e);
-        $message = $e->validator->messages()->messages();
+        $message = $e instanceof ValidationException ? $e->validator->getMessageBag()->all() : $e->getMessage();
         $route = $request->route()->uri;
         $action = $request->route()->action;
 
