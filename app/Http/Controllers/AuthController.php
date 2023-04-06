@@ -54,7 +54,7 @@ class AuthController extends Controller
             return back()->with('error', 'invalid credentials');
         }
 
-        return redirect()->route('tasks.index');
+        return redirect()->route('tasks.index')->with('success', 'login successful');
     }
 
     public function logout()

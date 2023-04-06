@@ -4,6 +4,11 @@ namespace App\Exceptions;
 
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Session\TokenMismatchException;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
+use PhpParser\Node\Expr\Instanceof_;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -45,10 +50,43 @@ class Handler extends ExceptionHandler
         });
 
         $this->renderable(function (Throwable $e) {
-            if ($e instanceof QueryException) {
-                return back()->with('error', 'something went wrong')->withInput();
-            }
+
         });
+    }
+
+    public function render($request, Throwable $e)
+    {
+        // dd($e);
+
+        $this->exceptionLogger($request, $e);
+
+        if ($e instanceof QueryException) {
+            return back()->with('error', 'something went wrong');
+        }
+
+        if ($e instanceof TokenMismatchException) {
+            return back()->with('error', 'something went wrong')->withInput();
+        }
+
+        if ($e instanceof ValidationException) {
+            return back()->withErrors($e->validator->messages()->messages())->withInput();
+        }
+
+    }
+
+    public function exceptionLogger($request, Throwable $e)
+    {
+        $exceptionClass = class_basename($e);
+        $message = $e->validator->messages()->messages();
+        $route = $request->route()->uri;
+        $action = $request->route()->action;
+
+        Log::error('Error on your app', [
+            'ExceptionClass' => $exceptionClass,
+            'message' => $message,
+            'route' => $route,
+            'action' => $action
+        ]);
     }
 
 }
