@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Traits\ApiResponseTrait;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Session\TokenMismatchException;
@@ -13,6 +14,7 @@ use Throwable;
 
 class Handler extends ExceptionHandler
 {
+    use ApiResponseTrait;
     /**
      * A list of exception types with their corresponding custom log levels.
      *
@@ -48,27 +50,26 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
 
         });
-
-        $this->renderable(function (Throwable $e) {
-
-        });
     }
 
     public function render($request, Throwable $e)
     {
-        $this->exceptionLogger($request, $e);
+            $this->exceptionLogger($request, $e);
 
-        if ($e instanceof QueryException) {
-            return back()->with('error', 'something went wrong');
-        }
+            if ($e instanceof QueryException) {
+                return back()->with('error', 'something went wrong');
+            }
 
-        if ($e instanceof TokenMismatchException) {
-            return back()->with('error', 'something went wrong')->withInput();
-        }
+            if ($e instanceof TokenMismatchException) {
+                return back()->with('error', 'something went wrong')->withInput();
+            }
 
-        if ($e instanceof ValidationException) {
-            return back()->withErrors($e->validator->getMessageBag()->all())->withInput();
-        }
+            if ($e instanceof ValidationException) {
+                if ($request->expectsJson()) {
+                    return $this->error($e->validator->getMessageBag()->all(), $e->status);
+                }
+                return back()->withErrors($e->validator->getMessageBag()->all())->withInput();
+            }
     }
 
     public function exceptionLogger($request, Throwable $e)
@@ -82,7 +83,7 @@ class Handler extends ExceptionHandler
             'ExceptionClass' => $exceptionClass,
             'message' => $message,
             'route' => $route,
-            'action' => $action
+            'action' => $action,
         ]);
     }
 
